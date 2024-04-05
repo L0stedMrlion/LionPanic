@@ -16,7 +16,6 @@ end
 RegisterCommand("loc", function()
     local ped = PlayerPedId()
 
-    if Config.AllowCommand then
         local jobName = PlayerData.job and PlayerData.job.name or nil
         if jobName and jobName == 'police' then
             RequestAnimDict("random@arrests")
@@ -80,7 +79,7 @@ AddEventHandler('location:alarm', function(playername, pos)
     SetBlipColour(Blip, 3)
 
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString("Officer's Location")
+    AddTextComponentString(Config.Location)
     EndTextCommandSetBlipName(Blip)
 
     SetBlipRoute(Blip, false)

@@ -16,7 +16,6 @@ end
 RegisterCommand("panic", function()
     local ped = PlayerPedId()
 
-    if Config.AllowCommand then
         local jobName = PlayerData.job and PlayerData.job.name or nil
         if jobName and jobName == 'police' then
             RequestAnimDict("random@arrests")
@@ -88,7 +87,7 @@ AddEventHandler('panicButton:alarm', function(playername, pos)
     SetBlipFlashInterval(Blip, 500)
 
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString("Panic Button")
+    AddTextComponentString(Config.Panic)
     EndTextCommandSetBlipName(Blip)
 
     SetBlipRoute(Blip, true)
@@ -109,9 +108,4 @@ AddEventHandler('panicButton:alarm', function(playername, pos)
 
         RemoveBlip(Blip)
     end)
-end)
-
-RegisterNetEvent('panicButton:error')
-AddEventHandler('panicButton:error', function()
-    ShowNotification(Config.NotAllowedNotification)
 end)

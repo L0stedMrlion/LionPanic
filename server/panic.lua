@@ -1,61 +1,16 @@
 local TriggerClientEvent, pairs, ipairs, PerformHttpRequest, json_encode = TriggerClientEvent, pairs, ipairs, PerformHttpRequest, json.encode
 
-if Config.Framework == "qbcore" then
-    QBCore = exports['qb-core']:GetCoreObject()
-end
-
-if Config.Framework == "esx" then
-    ESX.RegisterUsableItem(Config.ItemName, function(source)
-        if Config.UseItem then
-            local xPlayer = ESX.GetPlayerFromId(source)
-            local verify = false
-            for k,v in pairs(Config.Jobs) do
-                if xPlayer.job.name == v then
-                    verify = true 
-                end
-            end
-            if verify then
-                TriggerClientEvent('panicbutton:sendCoords', source)
-            else
-                TriggerClientEvent('panicButton:error', source)
-            end
-        else
-            TriggerClientEvent("esx:showNotification", source, Config.ItemNotAllowed )
-        end
-    end)
-else
-    QBCore.Functions.CreateUseableItem(Config.ItemName, function(source)
-        if Config.UseItem then
-            local xPlayer = QBCore.Functions.GetPlayer(source)
-            local verify = false
-            for k,v in pairs(Config.Jobs) do
-                if xPlayer.PlayerData.job["name"] == v then
-                    verify = true 
-                end
-            end
-            if verify then
-                TriggerClientEvent('panicbutton:sendCoords', source)
-            else
-                TriggerClientEvent('panicButton:error', source)
-            end
-        else
-            TriggerClientEvent("esx:showNotification", source, Config.ItemNotAllowed )
-        end
-    end)
-end
 
 local function SendLog(webhook, name, title, color, message, tagEveryone, player)      
      local playerName, playerJob
 
-     if Config.Framework == "esx" then -- for esx
+     if Config.Framework == "esx" then 
         local xPlayer = ESX.GetPlayerFromId(source)
 
-        -- Extracting the player's first and last name
         local firstname = xPlayer.get('firstName')
         local lastname = xPlayer.get('lastName')
         playerName = firstname .. ' ' .. lastname
     
-        -- Getting the player's job
         playerJob = xPlayer.job.name
     elseif Config.Framework == "qbcore" then
         xPlayer = QBCore.Functions.GetPlayer(source)
@@ -121,7 +76,7 @@ AddEventHandler('panicButton:syncPosition', function(position)
             end
         end
 
-        return -- Exit early after executing ESX block
+        return 
     end
 
     if Config.Framework == "qbcore" then
@@ -149,7 +104,7 @@ AddEventHandler('panicButton:syncPosition', function(position)
             end
         end
 
-        return -- Exit early after executing QBCore block
+        return 
     end
 
     print("Invalid Framework Configuration!")
